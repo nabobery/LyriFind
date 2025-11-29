@@ -3,18 +3,35 @@ import { streamText, convertToModelMessages, stepCountIs } from 'ai';
 import { experimental_createMCPClient as createMCPClient } from '@ai-sdk/mcp';
 import { z } from 'zod';
 
-// Prevent timeout on streaming responses
-export const maxDuration = 30;
+// Prevent timeout on streaming responses (increased for MCP tool calls)
+export const maxDuration = 60;
 
 // Singleton MCP client instance for connection pooling
 let mcpClientInstance: Awaited<ReturnType<typeof createMCPClient>> | null = null;
 
+/**
+ * Get or create MCP client instance
+ * Uses internal MCP endpoint when deployed on Vercel, external for local dev
+ */
 async function getMCPClient() {
   if (!mcpClientInstance) {
+    // Determine the MCP server URL
+    // In production: use the same origin (internal API route)
+    // In development: use MCP_SERVER_URL env var or fallback to internal route
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.MCP_SERVER_URL
+        ? process.env.MCP_SERVER_URL.replace(/\/mcp$/, '')
+        : 'http://localhost:3000';
+
+    const mcpUrl = `${baseUrl}/api/mcp/mcp`;
+
+    console.log('[Chat API] Connecting to MCP server:', mcpUrl);
+
     mcpClientInstance = await createMCPClient({
       transport: {
         type: 'http',
-        url: process.env.MCP_SERVER_URL || 'http://localhost:3001/mcp',
+        url: mcpUrl,
       },
     });
   }
