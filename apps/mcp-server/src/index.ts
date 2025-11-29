@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { z } from 'zod';
+import * as z from 'zod/v4';
 import { env } from './config/env.js';
 import { logger } from './utils/logger.js';
 import { identifySong, type IdentifySongArgs } from './tools/genius.js';

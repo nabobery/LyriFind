@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [],
+  transpilePackages: ['mcp-handler'],
   images: {
     remotePatterns: [
       {
@@ -33,6 +33,8 @@ const nextConfig = {
     // Fallback for unrecognized domains - use unoptimized images
     unoptimized: false,
   },
+  // Vercel serverless function configuration
+  serverExternalPackages: ['@modelcontextprotocol/sdk'],
 }
 
 module.exports = nextConfig
