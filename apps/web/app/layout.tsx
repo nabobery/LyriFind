@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "LyriFind - AI Song Finder",
   description: "Find songs by lyrics using AI",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
