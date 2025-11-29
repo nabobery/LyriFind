@@ -59,10 +59,10 @@ function getToolState(part: BasePart): 'input-streaming' | 'input-available' | '
 // Parse MCP tool output - it comes wrapped in content array with JSON string
 function parseMCPToolOutput<T>(output: unknown): T | null {
     if (!output) return null;
-    
+
     // MCP tools return { content: [{ type: 'text', text: 'JSON_STRING' }], isError: boolean }
     const mcpOutput = output as { content?: Array<{ type: string; text: string }>; isError?: boolean };
-    
+
     if (mcpOutput.content && Array.isArray(mcpOutput.content)) {
         const textContent = mcpOutput.content.find(c => c.type === 'text');
         if (textContent?.text) {
@@ -74,7 +74,7 @@ function parseMCPToolOutput<T>(output: unknown): T | null {
             }
         }
     }
-    
+
     // If it's already parsed, return as-is
     return output as T;
 }
@@ -244,35 +244,46 @@ export function ChatInterface(): React.JSX.Element {
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-200px)] min-h-[500px] max-h-[800px] w-full max-w-3xl mx-auto glass rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        <div className="flex flex-col flex-1 w-full h-full glass-card border-0 rounded-none relative">
             {/* Header */}
-            <div className="p-4 border-b border-white/10 bg-black/40 flex items-center gap-3 backdrop-blur-md">
-                <div className="p-2.5 rounded-full bg-primary/20 ring-2 ring-primary/30 shadow-lg shadow-primary/20">
-                    <Music className="w-5 h-5 text-primary" />
+            <div className="px-6 py-4 border-b border-white/5 bg-background/40 flex items-center justify-between backdrop-blur-md z-10">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-primary/10 ring-1 ring-primary/30 shadow-[0_0_15px_rgba(215,181,109,0.1)]">
+                        <Sparkles className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                        <h1 className="font-bold text-xl tracking-tight text-white">
+                            Lyri<span className="text-primary">Find</span>
+                        </h1>
+                    </div>
                 </div>
-                <div>
-                    <h2 className="font-semibold text-white text-lg">LyriFind Assistant</h2>
-                    <p className="text-xs text-gray-400">Powered by AI & Genius API</p>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 cursor-default">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <span className="text-xs text-primary font-medium">AI Music Assistant</span>
                 </div>
             </div>
 
             {/* Messages Area */}
-            <ScrollArea className="flex-1 p-4 md:p-6" ref={scrollRef}>
-                <div className="space-y-6 max-w-2xl mx-auto">
+            <ScrollArea className="flex-1 p-4 md:p-6 bg-gradient-to-b from-transparent to-black/20" ref={scrollRef}>
+                {/* ... (rest of the component remains the same until input area) ... */}
+                <div className="space-y-8 max-w-3xl mx-auto pb-4">
                     {messages.length === 0 && (
-                        <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center space-y-6 py-8">
-                            <div className="p-5 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/10 ring-2 ring-primary/20 shadow-xl shadow-primary/10">
+                        <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center space-y-8 py-12">
+                            <div className="p-6 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 ring-1 ring-primary/20 shadow-[0_0_30px_rgba(215,181,109,0.1)]">
                                 <Sparkles className="w-12 h-12 text-primary animate-pulse" />
                             </div>
-                            <div className="space-y-3">
-                                <p className="text-base font-medium text-white/90">Paste some lyrics to find your song</p>
-                                <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
+                            <div className="space-y-4">
+                                <p className="text-xl font-medium text-white/90 tracking-tight">Paste some lyrics to find your song</p>
+                                <p className="text-sm text-muted-foreground max-w-sm leading-relaxed mx-auto">
                                     Try something like: &quot;I&apos;ve been reading books of old, the legends and the myths&quot;
                                 </p>
                             </div>
                             <div className="flex flex-wrap justify-center gap-2 mt-4">
-                                {['Pop', 'Rock', 'Hip-Hop', 'R&B', 'Country'].map((genre) => (
-                                    <span key={genre} className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/50 border border-white/10">
+                                {['Pop', 'Rock', 'Hip-Hop', 'R&B', 'Jazz'].map((genre) => (
+                                    <span key={genre} className="px-4 py-1.5 text-xs font-medium rounded-full bg-white/5 text-muted-foreground border border-white/5 hover:bg-white/10 hover:text-primary transition-colors cursor-default">
                                         {genre}
                                     </span>
                                 ))}
@@ -287,21 +298,21 @@ export function ChatInterface(): React.JSX.Element {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                className={`flex gap-3 ${message.role === "user" ? "flex-row-reverse" : ""}`}
+                                className={`flex gap-4 ${message.role === "user" ? "flex-row-reverse" : ""}`}
                             >
-                                <Avatar className="w-8 h-8 border border-white/10 flex-shrink-0">
+                                <Avatar className="w-9 h-9 border border-white/10 flex-shrink-0 shadow-lg">
                                     {message.role === "user" ? (
-                                        <AvatarFallback className="bg-primary/20 text-primary">
+                                        <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
                                             <User className="w-4 h-4" />
                                         </AvatarFallback>
                                     ) : (
-                                        <AvatarFallback className="bg-secondary text-secondary-foreground">
+                                        <AvatarFallback className="bg-secondary text-white">
                                             <Music className="w-4 h-4" />
                                         </AvatarFallback>
                                     )}
                                 </Avatar>
 
-                                <div className={`flex flex-col gap-3 max-w-[90%] md:max-w-[85%] ${message.role === "user" ? "items-end" : "items-start"}`}>
+                                <div className={`flex flex-col gap-2 max-w-[85%] md:max-w-[75%] ${message.role === "user" ? "items-end" : "items-start"}`}>
                                     {message.parts.map((part, index) => {
                                         const typedPart = part as BasePart;
 
@@ -317,9 +328,9 @@ export function ChatInterface(): React.JSX.Element {
                                                     key={`${message.id}-text-${index}`}
                                                     initial={{ opacity: 0, y: 5 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    className={`p-3.5 rounded-2xl text-sm leading-relaxed ${message.role === "user"
-                                                        ? "bg-primary text-primary-foreground rounded-tr-sm"
-                                                        : "bg-muted text-muted-foreground rounded-tl-sm"
+                                                    className={`p-4 rounded-2xl text-sm leading-relaxed shadow-sm ${message.role === "user"
+                                                        ? "bg-primary text-primary-foreground rounded-tr-sm font-medium"
+                                                        : "bg-muted/50 text-foreground/90 rounded-tl-sm border border-white/5"
                                                         }`}
                                                 >
                                                     {typedPart.text}
@@ -349,7 +360,7 @@ export function ChatInterface(): React.JSX.Element {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="p-4 bg-destructive/10 border border-destructive/20 rounded-xl"
+                            className="p-4 bg-destructive/10 border border-destructive/20 rounded-xl max-w-2xl mx-auto"
                             role="alert"
                             aria-live="assertive"
                         >
@@ -364,7 +375,7 @@ export function ChatInterface(): React.JSX.Element {
                                 onClick={handleRetry}
                                 variant="outline"
                                 size="sm"
-                                className="mt-3 border-destructive/20 hover:bg-destructive/10"
+                                className="mt-3 border-destructive/20 hover:bg-destructive/10 text-destructive hover:text-destructive"
                             >
                                 Try Again
                             </Button>
@@ -376,18 +387,18 @@ export function ChatInterface(): React.JSX.Element {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="flex gap-3"
+                            className="flex gap-4"
                             role="status"
                             aria-live="polite"
                             aria-busy="true"
                             aria-label="AI is processing"
                         >
-                            <Avatar className="w-8 h-8 border border-white/10">
-                                <AvatarFallback className="bg-secondary text-secondary-foreground">
+                            <Avatar className="w-9 h-9 border border-white/10 shadow-lg">
+                                <AvatarFallback className="bg-secondary text-white">
                                     <Music className="w-4 h-4" />
                                 </AvatarFallback>
                             </Avatar>
-                            <div className="bg-muted p-3 rounded-2xl rounded-tl-sm">
+                            <div className="bg-muted/50 p-4 rounded-2xl rounded-tl-sm border border-white/5">
                                 <Visualizer />
                             </div>
                         </motion.div>
@@ -396,25 +407,28 @@ export function ChatInterface(): React.JSX.Element {
             </ScrollArea>
 
             {/* Input Area */}
-            <div className="p-4 md:p-5 bg-black/40 border-t border-white/10 backdrop-blur-md">
-                <form onSubmit={handleSubmit} className="flex gap-3 items-end max-w-2xl mx-auto">
-                    <ChatTextarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Paste lyrics here... (Shift+Enter for new line)"
-                        className="bg-black/40 border-white/10 focus-visible:ring-primary focus-visible:ring-2 text-white placeholder:text-gray-500 text-base"
-                        minRows={1}
-                        maxRows={5}
-                        disabled={isLoading}
-                    />
+            <div className="p-4 md:p-6 bg-background/60 border-t border-white/5 backdrop-blur-xl z-20">
+                <form onSubmit={handleSubmit} className="flex gap-4 items-end max-w-3xl mx-auto relative">
+                    <div className="relative flex-1 group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                        <ChatTextarea
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Paste lyrics here... (Shift+Enter for new line)"
+                            className="relative bg-black/40 border-white/10 focus-visible:ring-primary/50 focus-visible:ring-1 text-white placeholder:text-muted-foreground/50 text-base rounded-xl py-3 px-4 min-h-[50px]"
+                            minRows={1}
+                            maxRows={6}
+                            disabled={isLoading}
+                        />
+                    </div>
                     <Button
                         type="submit"
                         size="icon"
                         disabled={isLoading || !input.trim()}
-                        className="bg-primary hover:bg-primary/90 text-white flex-shrink-0 h-11 w-11 rounded-xl shadow-lg shadow-primary/20 transition-all hover:scale-105"
+                        className="bg-primary text-primary-foreground flex-shrink-0 h-[50px] w-[50px] rounded-xl shadow-[0_0_15px_rgba(215,181,109,0.2)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(215,181,109,0.4)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none"
                     >
-                        <Send className="w-5 h-5" />
+                        <Send className={`w-5 h-5 ${isLoading ? 'animate-pulse' : ''}`} />
                     </Button>
                 </form>
             </div>

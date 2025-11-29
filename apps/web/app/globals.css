@@ -1,29 +1,50 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Color Palette - Dark Mode Optimized */
-  --color-background: #0a0a0a;
-  --color-foreground: #ededed;
-  --color-primary: oklch(0.62 0.24 286);
-  --color-primary-foreground: oklch(0.98 0.01 286);
-  --color-secondary: oklch(0.22 0.02 264);
-  --color-secondary-foreground: oklch(0.98 0.01 264);
-  --color-muted: oklch(0.22 0.02 264);
-  --color-muted-foreground: oklch(0.65 0.01 264);
-  --color-accent: oklch(0.22 0.02 264);
-  --color-accent-foreground: oklch(0.98 0.01 264);
-  --color-destructive: oklch(0.62 0.22 25);
-  --color-destructive-foreground: oklch(0.98 0.01 25);
-  --color-border: oklch(0.22 0.02 264);
-  --color-input: oklch(0.22 0.02 264);
-  --color-ring: oklch(0.62 0.24 286);
-  --color-card: oklch(0.04 0 0);
-  --color-card-foreground: oklch(0.98 0.01 0);
-  --color-popover: oklch(0.04 0 0);
-  --color-popover-foreground: oklch(0.98 0.01 0);
+  /* Color Palette - Nocturnal Blue Jazz */
+  --color-background: #0F1E3D;
+  /* Midnight Blue */
+  --color-foreground: #8CA0B8;
+  /* Mist Blue-Grey */
+
+  --color-primary: #D7B56D;
+  /* Soft Gold */
+  --color-primary-foreground: #0F1E3D;
+  /* Midnight Blue */
+
+  --color-secondary: #274C7E;
+  /* Sax Blue */
+  --color-secondary-foreground: #FFFFFF;
+  /* White */
+
+  --color-muted: #1A2C4E;
+  /* Slightly lighter Midnight Blue */
+  --color-muted-foreground: #54606F;
+  /* Smoky Steel */
+
+  --color-accent: #274C7E;
+  /* Sax Blue */
+  --color-accent-foreground: #D7B56D;
+  /* Soft Gold */
+
+  --color-destructive: #FF5F5F;
+  /* Soft Red for errors */
+  --color-destructive-foreground: #FFFFFF;
+
+  --color-border: #54606F;
+  /* Smoky Steel */
+  --color-input: #1A2C4E;
+  --color-ring: #D7B56D;
+  /* Soft Gold */
+
+  --color-card: #0F1E3D;
+  --color-card-foreground: #8CA0B8;
+
+  --color-popover: #0F1E3D;
+  --color-popover-foreground: #8CA0B8;
 
   /* Radius */
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 
   /* Animations */
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -78,30 +99,38 @@
 
     0%,
     100% {
-      box-shadow: 0 0 10px oklch(0.62 0.24 286), 0 0 20px oklch(0.62 0.24 286);
+      box-shadow: 0 0 5px rgba(215, 181, 109, 0.5), 0 0 10px rgba(215, 181, 109, 0.3);
     }
 
     50% {
-      box-shadow: 0 0 20px oklch(0.82 0.15 286), 0 0 30px oklch(0.82 0.15 286);
+      box-shadow: 0 0 10px rgba(215, 181, 109, 0.8), 0 0 20px rgba(215, 181, 109, 0.5);
     }
   }
 }
 
 @layer utilities {
   .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 30, 61, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(84, 96, 111, 0.3);
   }
 
   .glass-card {
-    background: rgba(30, 41, 59, 0.7);
+    background: rgba(39, 76, 126, 0.2);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(215, 181, 109, 0.1);
   }
 
   .text-balance {
     text-wrap: balance;
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(215, 181, 109, 0.15);
+  }
+
+  .gradient-blue {
+    background: linear-gradient(135deg, #0F1E3D 0%, #274C7E 100%);
   }
 }
 
